@@ -26,8 +26,8 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}
       >
         <CustomCursor />
+        <Navbar />
         <div className="pt-20 bg-white font-zodiak selection:bg-yellow-200 selection:text-gray-500">
-          <Navbar />
           {children}
           <Foot />
         </div>
