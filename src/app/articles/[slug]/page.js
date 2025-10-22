@@ -1,25 +1,32 @@
+// app/articles/[slug]/page.js
 import parse from "html-react-parser";
 import { getPostBySlug, getPostSlugs } from "../../../lib/posts";
-import Navbar from "@/components/Navbar";
-import Foot from "@/components/footer";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   const slugs = await getPostSlugs();
-  return (slugs || []).map((slug) => ({ slug }));
+  const safe = (slugs || []).filter((s) => Boolean(s) && typeof s === "string");
+  if (safe.length === 0) {
+    console.warn("generateStaticParams: no post slugs found.");
+  }
+  return safe.map((slug) => ({ slug }));
 }
 
 export default async function PostPage({ params }) {
-  const { slug } = params;
-  const post = await getPostBySlug(slug);
-
-  if (!post) {
-    return (
-      <div>
-        <h1>Post not found</h1>
-        <p>The requested post &quot;{slug}&quot; does not exist.</p>
-      </div>
-    );
+  const { slug } = await params;
+  if (!slug) {
+    return notFound();
   }
+
+  let post;
+  try {
+    post = await getPostBySlug(slug);
+  } catch (err) {
+    console.warn(`PostPage: couldn't load post "${slug}": ${err.message}`);
+    return notFound();
+  }
+
+  if (!post) return notFound();
 
   return (
     <article className="text-black p2 md:p-8">

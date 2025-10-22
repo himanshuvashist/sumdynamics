@@ -37,16 +37,28 @@ async function dirExists(p) {
   }
 }
 
+function normalizeSlug(name) {
+  if (!name || typeof name !== "string") return null;
+  const slug = name.replace(/\.md$/, "").trim();
+  if (!slug || slug.toLowerCase() === "undefined") return null;
+  return slug;
+}
+
 export async function getPostSlugs() {
   const exists = await dirExists(postsDir);
   if (!exists) return [];
   const names = await fs.promises.readdir(postsDir);
   return names
     .filter((n) => n.endsWith(".md"))
-    .map((n) => n.replace(/\.md$/, ""));
+    .map((n) => normalizeSlug(n))
+    .filter(Boolean);
 }
 
 export async function getPostBySlug(slug) {
+  if (!slug || typeof slug !== "string") {
+    throw new Error(`Invalid slug passed to getPostBySlug: ${String(slug)}`);
+  }
+
   const fullPath = path.join(postsDir, `${slug}.md`);
   try {
     await fs.promises.access(fullPath, fs.constants.R_OK);
@@ -56,7 +68,6 @@ export async function getPostBySlug(slug) {
 
   const raw = await fs.promises.readFile(fullPath, "utf8");
 
-  // parse frontmatter - wrap for friendly errors
   let data, content;
   try {
     const parsed = matter(raw);
@@ -68,32 +79,51 @@ export async function getPostBySlug(slug) {
     );
   }
 
-  // Build pipeline: markdown -> mdast -> hast -> sanitized hast -> HTML string
   const processor = unified()
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: false })
-    .use(rehypeSanitize) // sanitize AST
+    .use(rehypeSanitize)
     .use(rehypeStringify);
 
   const file = await processor.process(content);
-  const safeHtml = String(file); // sanitized HTML
+  const safeHtml = String(file);
 
   return {
     slug,
     meta: data,
-    contentHtml: safeHtml, // sanitized HTML string
+    contentHtml: safeHtml,
   };
 }
 
 export async function getAllPosts() {
   const slugs = await getPostSlugs();
   if (!slugs || slugs.length === 0) return [];
-  const posts = await Promise.all(slugs.map((s) => getPostBySlug(s)));
+
+  const posts = [];
+  const errors = [];
+
+  await Promise.all(
+    slugs.map(async (s) => {
+      try {
+        const p = await getPostBySlug(s);
+        posts.push(p);
+      } catch (err) {
+        errors.push({ slug: s, error: String(err.message) });
+        console.warn(`Skipping post "${s}": ${err.message}`);
+      }
+    }),
+  );
+
   posts.sort((a, b) => {
     const da = a.meta?.date ?? "";
     const db = b.meta?.date ?? "";
     return db.localeCompare(da);
   });
+
+  if (errors.length > 0) {
+    console.warn("Some posts were skipped due to errors:", errors);
+  }
+
   return posts;
 }
