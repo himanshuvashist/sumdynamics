@@ -1,6 +1,8 @@
 import FancyButton from "@/components/FancyButton";
 import clsx from "clsx";
 
+const prefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || "";
+
 const Parts = ({ h = "", back = false, switchModal }) => {
   return (
     <>
@@ -76,7 +78,11 @@ const SectionTwo = ({ switchModal }) => {
       >
         <div>
           <div>
-            <img src="/sectionTwoText.svg" alt="icon" className="w-full" />
+            <img
+              src={`${prefix}/sectionTwoText.svg`}
+              alt="icon"
+              className="w-full"
+            />
           </div>
         </div>
       </section>

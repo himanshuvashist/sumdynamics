@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import clsx from "clsx";
 
+const prefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || "";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
@@ -29,7 +31,11 @@ const Navbar = () => {
       >
         <a href="/" onClick={() => setIsOpen(false)}>
           <div className="flex items-center justify-between items-center font-cabinet font-bold">
-            <img src="/Logo.svg" alt="icon" className="h-[2.5rem] w=[2.5rem]" />
+            <img
+              src={`${prefix}/Logo.svg`}
+              alt="icon"
+              className="h-[2.5rem] w=[2.5rem]"
+            />
             <p className={clsx("p-3 text-black", { hidden: isOpen })}>
               Sumdynamics
             </p>

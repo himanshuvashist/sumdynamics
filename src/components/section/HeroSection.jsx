@@ -1,5 +1,7 @@
 import Navbar from "@/components/Navbar";
 
+const prefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || "";
+
 const HeroSection = () => {
   return (
     <>
@@ -7,7 +9,7 @@ const HeroSection = () => {
         <div className="flex-1 bg-amber-200 mx-2 rounded-md mb-4 relative overflow-hidden">
           <video
             className="absolute inset-0 w-full h-full object-cover"
-            src="./video.mp4"
+            src={`${prefix}/video.mp4`}
             autoPlay
             muted
             loop
@@ -39,7 +41,7 @@ const HeroSection = () => {
           </div>
           <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center p-4">
             <img
-              src="/heroOverlay.svg"
+              src={`${prefix}/heroOverlay.svg`}
               alt="icon"
               className="h-inherit w-full object-bottom backdrop-blur-none blur-none mb-4"
             />

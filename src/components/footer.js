@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import FancyButton from "@/components/FancyButton";
 import Link from "next/link";
 
-function Button(props) {
-  return null;
-}
+const prefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || "";
 
 const Foot = () => {
   const [year, setYear] = useState("");
@@ -37,7 +35,10 @@ const Foot = () => {
         <div className="flex flex-row justify-between m-4">
           <div className="flex-1 items-center justify-start hidden md:flex">
             <p className="text-black text-lg p-4 font-cabinet">
-              <img src="/Logo.svg" className="h-8 w-8 inline-block mx-2" />
+              <img
+                src={`${prefix}/Logo.svg`}
+                className="h-8 w-8 inline-block mx-2"
+              />
               sumdynamics.
             </p>
           </div>
@@ -99,6 +100,7 @@ const Foot = () => {
           <p className="text-xs ml-4 text-center text-black">Made in 🇮🇳</p>
         </div>
       </div>
+      <div>v4</div>
     </section>
   );
 };

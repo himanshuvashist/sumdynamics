@@ -1,6 +1,6 @@
 ---
 title: "The Headline of topic"
-date: "2024-01-15"
+date: "2024-01-16"
 description: "My first blog post with Next.js"
 writer: "someone"
 tags: [ nextjs, tutorial ]
