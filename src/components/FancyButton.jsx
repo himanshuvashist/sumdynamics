@@ -6,6 +6,7 @@ const FancyButton = ({
   children,
   className,
   bgColor = "bg-black",
+  staticBgColor = "bg-transparent",
   variant = "default", // ✅ new prop
   border = false,
   ...props
@@ -26,6 +27,7 @@ const FancyButton = ({
           "border border-black/40 text-white": border && variant === "default", // ✅ Dark base styles
           "border border-white/40 text-white": border && variant === "dark", // ✅ Dark base styles
         },
+        staticBgColor,
       )}
     >
       {/* Expanding background */}
