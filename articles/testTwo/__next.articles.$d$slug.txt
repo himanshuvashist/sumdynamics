@@ -1,4 +1,4 @@
 1:"$Sreact.fragment"
 2:I[39756,["/sumdynamics/_next/static/chunks/ff1a16fafef87110.js","/sumdynamics/_next/static/chunks/247eb132b7f7b574.js"],"default"]
 3:I[37457,["/sumdynamics/_next/static/chunks/ff1a16fafef87110.js","/sumdynamics/_next/static/chunks/247eb132b7f7b574.js"],"default"]
-0:{"buildId":"4OT5nRHHF_-MhgB-yeRCv","rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"jFljy4maUBzRkgv_zIfpC","rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"loading":null,"isPartial":false}
