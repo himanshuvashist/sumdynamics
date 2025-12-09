@@ -1,9 +1,48 @@
 import FancyButton from "@/components/FancyButton";
 import clsx from "clsx";
+import { useState } from "react";
+import { useModal } from "@/components/ModalProvider";
 
 const prefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || "";
 
-const Parts = ({ h = "", back = false, switchModal }) => {
+export const ModalExample = ({ close }) => {
+  return (
+    <>
+      <h1 className="text-black text-4xl font-cabinet">
+        Extreme heat tolerant and dust proof
+      </h1>
+      <p className="text-gray-600 text-md font-cabinet">
+        Only this layer is interactive and scrollable.
+      </p>
+      <div>
+        <p className="text-gray-600 text-2xl md:text-4xl pt-16 font-cabinet">
+          {`Contrary to popular belief, Lorem Ipsum is not simply random
+                  text. It has roots in a piece of classical Latin literature
+                  from 45 BC, making it over 2000 years old. Richard McClintock,
+                  a Latin professor at Hampden-Sydney College in Virginia,
+                  looked up one of the more obscure Latin words, consectetur,
+                  from a Lorem Ipsum passage, and going through the cites of the
+                  word in classical literature, discovered the undoubtable
+                  source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of
+                  "de Finibus Bonorum et Malorum" (The Extremes of Good and
+                  Evil) by Cicero, written in 45 BC. This book is a treatise on
+                  the theory of ethics, very popular during the Renaissance. The
+                  first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..",
+                  comes from a line in section 1.10.32. The standard chunk of
+                  Lorem Ipsum used since the 1500s is reproduced below for those
+                  interested. Sections 1.10.32 and 1.10.33 from "de Finibus
+                  Bonorum et Malorum" by Cicero are also reproduced in their
+                  exact original form, accompanied by English versions from the
+                  1914 translation by H. Rackham.`}
+        </p>
+      </div>
+      {/*  </div>*/}
+      {/*</div>*/}
+    </>
+  );
+};
+const Parts = ({ h = "", back = false }) => {
+  const { open } = useModal();
   return (
     <>
       <div className="flex gap-4 flex-col lg:flex-row">
@@ -58,7 +97,11 @@ const Parts = ({ h = "", back = false, switchModal }) => {
             <div className="flex items-center justify-center">
               <FancyButton
                 className="text-black"
-                onClick={() => switchModal(true)}
+                onClick={() =>
+                  open({
+                    Component: ModalExample,
+                  })
+                }
               >
                 <p className="text-3xl">+</p>
               </FancyButton>
@@ -88,9 +131,9 @@ const SectionTwo = ({ switchModal }) => {
       </section>
       <div className="px-4 pb-4 bg-white">
         <div className="flex flex-col gap-14 lg:gap-18">
-          <Parts h={"HEAVY DUTY METAL"} switchModal={switchModal} />
-          <Parts h={"ALWAYS ON RADAR"} back switchModal={switchModal} />
-          <Parts h={"LONG RANGE"} switchModal={switchModal} />
+          <Parts h={"HEAVY DUTY METAL"} />
+          <Parts h={"ALWAYS ON RADAR"} back />
+          <Parts h={"LONG RANGE"} />
         </div>
       </div>
     </>

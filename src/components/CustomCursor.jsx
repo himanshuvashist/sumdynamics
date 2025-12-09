@@ -1,44 +1,70 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { usePathname } from "next/navigation"; // Next.js hook
+import React, { useEffect, useState, useRef } from "react";
+import { usePathname } from "next/navigation";
+
+const TARGET_SELECTOR = '.fancy-btn, [data-cursor="merge-cursor"]';
 
 const CustomCursor = () => {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
-  console.log("hidden", hidden);
+  const hiddenRef = useRef(false);
+  hiddenRef.current = hidden;
 
   useEffect(() => {
-    const move = (e) => setPos({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", move);
-    window.addEventListener("pointermove", move); // covers touch + pencil
+    // track pointer position (mouse + pointer devices)
+    const onMove = (e) => setPos({ x: e.clientX, y: e.clientY });
+    window.addEventListener("pointermove", onMove, { passive: true });
 
-    const fancyButtons = document.querySelectorAll(".fancy-btn");
-    const elements = document.querySelectorAll('[data-cursor="merge-cursor"]');
-    const hide = () => setHidden(true);
-    const show = () => setHidden(false);
+    // Helpers
+    const isTarget = (el) =>
+      !!(el && el.closest && el.closest(TARGET_SELECTOR));
 
-    [...fancyButtons, ...elements].forEach((el) => {
-      // hover for mouse
-      el.addEventListener("mouseenter", hide);
-      el.addEventListener("mouseleave", show);
+    // pointerover/pointerout bubble (pointerenter/pointerleave do not bubble)
+    const onPointerOver = (e) => {
+      if (isTarget(e.target)) setHidden(true);
+    };
+    const onPointerOut = (e) => {
+      // pointerout's relatedTarget can be null; if moving between two target elements, keep hidden
+      const to = e.relatedTarget;
+      if (!isTarget(to)) setHidden(false);
+    };
 
-      // press for touch/pencil/mouse
-      el.addEventListener("pointerdown", hide);
-      el.addEventListener("pointerup", show);
-    });
+    // press/release
+    const onPointerDown = (e) => {
+      if (isTarget(e.target)) setHidden(true);
+    };
+    const onPointerUp = (e) => {
+      // if pointer is still over a target, keep it hidden, otherwise show
+      const over = document.elementFromPoint(e.clientX, e.clientY);
+      if (!isTarget(over)) setHidden(false);
+    };
+
+    // keyboard focus (accessibility)
+    const onFocusIn = (e) => {
+      if (isTarget(e.target)) setHidden(true);
+    };
+    const onFocusOut = (e) => {
+      if (!isTarget(e.relatedTarget)) setHidden(false);
+    };
+
+    document.addEventListener("pointerover", onPointerOver);
+    document.addEventListener("pointerout", onPointerOut);
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("pointerup", onPointerUp);
+    document.addEventListener("focusin", onFocusIn);
+    document.addEventListener("focusout", onFocusOut);
 
     return () => {
-      window.removeEventListener("mousemove", move);
-      window.removeEventListener("pointermove", move);
-      [...fancyButtons, ...elements].forEach((el) => {
-        el.removeEventListener("mouseenter", hide);
-        el.removeEventListener("mouseleave", show);
-        el.removeEventListener("pointerdown", hide);
-        el.removeEventListener("pointerup", show);
-      });
+      window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerover", onPointerOver);
+      document.removeEventListener("pointerout", onPointerOut);
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("pointerup", onPointerUp);
+      document.removeEventListener("focusin", onFocusIn);
+      document.removeEventListener("focusout", onFocusOut);
     };
-  }, [pathname]);
+  }, []); // keep same dependency you had (optional)
 
   return (
     <div

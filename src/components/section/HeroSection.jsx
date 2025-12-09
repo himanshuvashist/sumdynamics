@@ -20,7 +20,7 @@ const HeroSection = () => {
 
           <div className="absolute bg-white/30 bottom-0 left-0 right-0 flex flex-col justify-center items-end progressive-blur">
             <img
-              src="/heroOverlay.svg"
+              src={`${prefix}/heroOverlay.svg`}
               alt="icon"
               className="invisible w-full object-bottom backdrop-blur-none blur-none mb-8"
             />

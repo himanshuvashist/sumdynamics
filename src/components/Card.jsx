@@ -1,9 +1,12 @@
 "use client";
 
 import FancyButton from "@/components/FancyButton";
+import { ModalExample } from "@/components/section/SectionTwo";
+import { useModal } from "@/components/ModalProvider";
 
 const prefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || "";
 const Card = ({ img = "" }) => {
+  const { open } = useModal();
   return (
     <>
       <div className="h-72 min-w-[15rem] sm:min-w-[20rem] md:min-w-[25rem] lg:min-w-[28rem] w-4/5 rounded-lg  relative overflow-hidden">
@@ -22,7 +25,14 @@ const Card = ({ img = "" }) => {
                   </p>
                 </div>
                 <div>
-                  <FancyButton variant="dark">
+                  <FancyButton
+                    variant="dark"
+                    onClick={() =>
+                      open({
+                        Component: ModalExample,
+                      })
+                    }
+                  >
                     <p className="text-4xl">+</p>
                   </FancyButton>
                 </div>

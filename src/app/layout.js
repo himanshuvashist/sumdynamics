@@ -3,6 +3,8 @@ import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import Foot from "@/components/footer";
 import Navbar from "@/components/Navbar";
+import { SimpleModalProvider } from "@/components/ModalProvider";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,12 +27,16 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}
       >
-        <CustomCursor />
-        <Navbar />
-        <div className="pt-20 bg-white font-zodiak selection:bg-yellow-200 selection:text-gray-500">
-          {children}
-          <Foot />
-        </div>
+        <SimpleModalProvider>
+          <SmoothScrollProvider>
+            <CustomCursor />
+            <Navbar />
+            <div className="pt-20 bg-white font-zodiak selection:bg-yellow-200 selection:text-gray-500">
+              {children}
+              <Foot />
+            </div>
+          </SmoothScrollProvider>
+        </SimpleModalProvider>
       </body>
     </html>
   );

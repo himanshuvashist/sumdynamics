@@ -3,16 +3,21 @@ import FancyButton from "@/components/FancyButton";
 import { useState } from "react";
 
 import clsx from "clsx";
+import { useModal } from "@/components/ModalProvider";
+import Link from "next/link";
 
 const prefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || "";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { close: closeModal } = useModal();
   const handleOpen = () => {
     setIsOpen(true);
+    closeModal();
   };
   const handleClose = () => {
     setIsOpen(false);
+    closeModal();
   };
 
   return (
@@ -20,7 +25,7 @@ const Navbar = () => {
       <nav
         id="nav"
         className={clsx(
-          "transition-all duration-600 ease-in-out font-normal z-10 flex  items-center   fixed bg-white/40 backdrop-blur-2xl  left-0 right-0",
+          "transition-all duration-600 ease-in-out font-normal z-30 flex  items-center   fixed bg-white/40 backdrop-blur-2xl  left-0 right-0",
           {
             // "justify-center": isOpen,
             // "justify-between": !isOpen,
@@ -29,7 +34,7 @@ const Navbar = () => {
           },
         )}
       >
-        <a href="/" onClick={() => setIsOpen(false)}>
+        <Link href="/" onClick={() => setIsOpen(false)}>
           <div className="flex items-center justify-between items-center font-cabinet font-bold">
             <img
               src={`${prefix}/Logo.svg`}
@@ -40,7 +45,7 @@ const Navbar = () => {
               Sumdynamics
             </p>
           </div>
-        </a>
+        </Link>
 
         <FancyButton
           onClick={handleOpen}
@@ -65,21 +70,21 @@ const Navbar = () => {
         >
           <ul className="flex flex-col gap-8 px-8 py-4 items-center">
             <li>
-              <a href="/#tech" onClick={() => setIsOpen(false)}>
+              <Link href="/#tech" onClick={() => setIsOpen(false)}>
                 <FancyButton className="text-black" href="#tech">
                   Technology
                 </FancyButton>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/#specs" onClick={() => setIsOpen(false)}>
+              <Link href="/#specs" onClick={() => setIsOpen(false)}>
                 <FancyButton className="text-black">Specs</FancyButton>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/#comingsoon" onClick={() => setIsOpen(false)}>
+              <Link href="/#comingsoon" onClick={() => setIsOpen(false)}>
                 <FancyButton className="text-black">Coming Soon</FancyButton>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -87,21 +92,21 @@ const Navbar = () => {
         <div className="hidden lg:block">
           <ul className="flex flex-wrap gap-8 items-center">
             <li>
-              <a href="/#tech" tabIndex="0" role="button">
+              <Link href="/#tech" tabIndex="0" role="button">
                 <FancyButton className="text-black " href="#tech">
                   Technology
                 </FancyButton>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/#specs" tabIndex="0" role="button">
+              <Link href="/#specs" tabIndex="0" role="button">
                 <FancyButton className="text-black">Specs</FancyButton>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/#comingsoon" tabIndex="0" role="button">
+              <Link href="/#comingsoon" tabIndex="0" role="button">
                 <FancyButton className="text-black">Coming Soon</FancyButton>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

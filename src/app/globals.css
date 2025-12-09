@@ -5,6 +5,24 @@
   --foreground: #171717;
 }
 
+/* globals.css - hide native cursor everywhere (use carefully) */
+html,
+body,
+#__next,
+.app-root {
+  cursor: none !important;
+}
+
+/* also force for every element and common pseudo-states */
+*,
+*:hover,
+*:active,
+*:focus,
+*::before,
+*::after {
+  cursor: none !important;
+}
+
 @font-face {
   font-family: "Zodiak";
   src: url("/fonts/zodiak/Zodiak-Variable.woff2") format("woff2-variations");

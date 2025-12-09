@@ -94,13 +94,16 @@ const Foot = () => {
         <div className="mb-8">
           <p className="text-black text-xs p-4 text-center">
             copyright &copy; {year},
-            <img src="/Logo.svg" className="h-4 w-4 inline-block mx-2" />
+            <img
+              src={`${prefix}/Logo.svg`}
+              className="h-4 w-4 inline-block mx-2"
+            />
             <span className="font-cabinet text-md">sumdynamics.</span>
           </p>
           <p className="text-xs ml-4 text-center text-black">Made in 🇮🇳</p>
         </div>
       </div>
-      <div>v4</div>
+      <div>v5</div>
     </section>
   );
 };
